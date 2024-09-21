@@ -23,7 +23,7 @@ export default {
     dragDialog: '拖拽 Dialog',
     dragSelect: '拖拽 Select',
     dragKanban: '可拖拽看板',
-    charts: '图表',
+    charts: '视图分析',
     keyboardChart: '键盘图表',
     lineChart: '折线图',
     mixChart: '混合图表',
@@ -36,7 +36,7 @@ export default {
     'menu1-2-2': '菜单 1-2-2',
     'menu1-3': '菜单 1-3',
     menu2: '菜单 2',
-    Table: 'Table',
+    Table: '设备列表',
     dynamicTable: '动态 Table',
     dragTable: '拖拽 Table',
     inlineEditTable: 'Table 内编辑',
@@ -62,7 +62,9 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
     externalLink: '外链',
-    profile: '个人中心'
+    profile: '个人中心',
+    setting: '设置',
+    roleSetting: '权限设置'
   },
   navbar: {
     dashboard: '首页',

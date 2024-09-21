@@ -132,6 +132,30 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/page',
+    alwaysShow: true, // will always show the root menu
+    name: 'Setting',
+    meta: {
+      title: 'setting',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'role',
+        component: () => import('@/views/setting/role'),
+        name: 'RoleSetting',
+        meta: {
+          title: 'roleSetting',
+          roles: ['admin']
+        }
+      }
+    ]
+  },
+  /*
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
@@ -172,7 +196,6 @@ export const asyncRoutes = [
       }
     ]
   },
-  /*
   {
     path: '/icon',
     component: Layout,
@@ -191,7 +214,7 @@ export const asyncRoutes = [
   chartsRouter,
   // nestedRouter,
   tableRouter,
-
+  /*
   {
     path: '/example',
     component: Layout,
@@ -223,7 +246,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
   {
     path: '/tab',
     component: Layout,
@@ -236,7 +258,7 @@ export const asyncRoutes = [
       }
     ]
   },
-
+  */
   {
     path: '/error',
     component: Layout,
