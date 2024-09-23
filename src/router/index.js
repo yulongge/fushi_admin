@@ -132,6 +132,20 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/warn',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/warn/index'),
+        name: 'Warn',
+        meta: { title: 'warn', icon: 'chart', noCache: true }
+      }
+    ]
+  },
+  tableRouter,
+  chartsRouter,
+  {
     path: '/setting',
     component: Layout,
     redirect: '/setting/page',
@@ -196,6 +210,7 @@ export const asyncRoutes = [
       }
     ]
   },
+  */
   {
     path: '/icon',
     component: Layout,
@@ -208,12 +223,9 @@ export const asyncRoutes = [
       }
     ]
   },
-  */
   /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
-  chartsRouter,
   // nestedRouter,
-  tableRouter,
   /*
   {
     path: '/example',

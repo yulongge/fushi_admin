@@ -64,7 +64,8 @@ export default {
     externalLink: '外链',
     profile: '个人中心',
     setting: '设置',
-    roleSetting: '权限设置'
+    roleSetting: '权限设置',
+    warn: '报警管理'
   },
   navbar: {
     dashboard: '首页',
