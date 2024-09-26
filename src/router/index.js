@@ -158,6 +158,15 @@ export const asyncRoutes = [
     },
     children: [
       {
+        path: 'user',
+        component: () => import('@/views/setting/user'),
+        name: 'UserSetting',
+        meta: {
+          title: 'userSetting',
+          roles: ['admin']
+        }
+      },
+      {
         path: 'role',
         component: () => import('@/views/setting/role'),
         name: 'RoleSetting',
