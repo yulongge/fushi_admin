@@ -4,7 +4,7 @@ export default {
     documentation: '文档',
     guide: '引导页',
     permission: '权限测试页',
-    rolePermission: '角色权限',
+    rolePermission: '角色管理',
     pagePermission: '页面权限',
     directivePermission: '指令权限',
     icons: '图标',
@@ -64,9 +64,11 @@ export default {
     externalLink: '外链',
     profile: '个人中心',
     setting: '设置',
-    roleSetting: '权限设置',
+    roleSetting: '角色管理',
     userSetting: '用户管理',
-    warn: '报警管理'
+    warn: '报警管理',
+    deptSetting: '部门管理',
+    menuSetting: '菜单管理'
   },
   navbar: {
     dashboard: '首页',
@@ -123,6 +125,7 @@ export default {
     remark: '点评',
     search: '搜索',
     add: '添加',
+    addSubDept: '添加下级',
     export: '导出',
     import: '导入',
     reviewer: '审核人',
@@ -148,7 +151,20 @@ export default {
     detail: '详情',
     pwd: '密码',
     forze: '冻结',
-    daili: '代理人'
+    daili: '代理人',
+    roleCode: '角色编码',
+    roleName: '角色名称',
+    reset: '重置',
+    createTime: '创建时间',
+    createMenu: '新建菜单',
+    warn_prod_num: '设备编号',
+    warn_prod_name: '设备名称',
+    warn_prod_type: '设备类型',
+    warn_prod_time: '采集时间',
+    warn_prod_fushi: '腐蚀速率',
+    warn_prod_fushi_standard: '腐蚀速率标准值',
+    warn_prod_content: '报警信息',
+    warn_type: '报警类型'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

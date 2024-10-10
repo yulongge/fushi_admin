@@ -36,3 +36,10 @@ export function deleteRole(id) {
     method: 'delete'
   })
 }
+
+export function getMenus() {
+  return request({
+    url: '/vue-element-admin/menus',
+    method: 'get'
+  })
+}

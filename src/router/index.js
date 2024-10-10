@@ -167,11 +167,29 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'dept',
+        component: () => import('@/views/setting/dept'),
+        name: 'DeptSetting',
+        meta: {
+          title: 'deptSetting',
+          roles: ['admin']
+        }
+      },
+      {
         path: 'role',
         component: () => import('@/views/setting/role'),
         name: 'RoleSetting',
         meta: {
           title: 'roleSetting',
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'menu',
+        component: () => import('@/views/setting/menu'),
+        name: 'menuSetting',
+        meta: {
+          title: 'menuSetting',
           roles: ['admin']
         }
       }

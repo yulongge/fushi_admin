@@ -3,40 +3,40 @@
     <div class="filter-container">
       <el-form ref="form" :model="listQuery" label-width="40px" :inline="true">
         <el-form-item label="账户">
-          <el-input v-model="listQuery.username" :placeholder="$t('table.username')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-input v-model="listQuery.username" size="mini" :placeholder="$t('table.username')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input v-model="listQuery.realname" :placeholder="$t('table.realname')" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-input v-model="listQuery.realname" size="mini" :placeholder="$t('table.realname')" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="listQuery.sex" :placeholder="$t('table.sex')" clearable class="filter-item" style="width: 130px">
+          <el-select v-model="listQuery.sex" size="mini" :placeholder="$t('table.sex')" clearable class="filter-item" style="width: 130px">
             <el-option v-for="item in sexTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
         <el-form-item label="手机号" label-width="80px">
-          <el-input v-model="listQuery.phone" :placeholder="$t('table.phone')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-input v-model="listQuery.phone" size="mini" :placeholder="$t('table.phone')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="用户状态" label-width="80px">
-          <el-select v-model="listQuery.status" :placeholder="$t('table.status')" clearable class="filter-item" style="width: 130px">
+          <el-select v-model="listQuery.status" size="mini" :placeholder="$t('table.status')" clearable class="filter-item" style="width: 130px">
             <el-option v-for="item in statusTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">
             {{ $t('table.search') }}
           </el-button>
-          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">
             {{ $t('table.search') }}
           </el-button>
         </el-form-item>
       </el-form>
-      <el-button class="filter-item" style="" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-item" size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ $t('table.add') }}
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button v-waves :loading="downloadLoading" size="mini" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         {{ $t('table.export') }}
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button v-waves :loading="downloadLoading" size="mini" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         {{ $t('table.import') }}
       </el-button>
     </div>
@@ -408,11 +408,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user-container {
+  padding: 10px;
+  background-color: #efefef;
   .filter-container {
     // margin-top: 30px;
+    background-color: #ffffff;
     padding: 20px;
+    margin-bottom: 10px;
     ::v-deep .el-form-item {
       margin-bottom: 10px;
+    }
+    .filter-item {
+      margin-bottom: 0px;
     }
   }
   .avatar-table {
@@ -421,6 +428,9 @@ export default {
   }
   .option-item {
     margin-left: 10px;
+  }
+  .pagination-container {
+    margin-top: 10px;
   }
 }
 </style>
