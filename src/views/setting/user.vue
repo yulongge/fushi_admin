@@ -160,6 +160,72 @@
         <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
       </span>
     </el-dialog>
+    <el-drawer
+      title="新增用户"
+      :visible.sync="showAddUser"
+      direction="rtl"
+      :before-close="handleCloseUser"
+    >
+      <el-form ref="dataForm" :rules="rules" :model="userForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('user.username')" prop="username" size="mini">
+          <el-input v-model="userForm.username" />
+        </el-form-item>
+        <el-form-item :label="$t('user.password')" prop="password" size="mini">
+          <el-input v-model="userForm.password" />
+        </el-form-item>
+        <el-form-item :label="$t('user.confirmPassword')" prop="confirmPassword" size="mini">
+          <el-input v-model="userForm.confirmPassword" />
+        </el-form-item>
+        <el-form-item :label="$t('user.realname')" prop="realname" size="mini">
+          <el-input v-model="userForm.realname" />
+        </el-form-item>
+        <el-form-item :label="$t('user.workNo')" prop="workNo" size="mini">
+          <el-input v-model="userForm.workNo" />
+        </el-form-item>
+        <el-form-item :label="$t('user.post')" prop="post" size="mini">
+          <el-input v-model="userForm.post" />
+        </el-form-item>
+        <el-form-item :label="$t('user.selectedroles')" prop="selectedroles" size="mini">
+          <el-input v-model="userForm.selectedroles" />
+        </el-form-item>
+        <el-form-item :label="$t('user.selecteddeparts')" prop="selecteddeparts" size="mini">
+          <el-input v-model="userForm.selecteddeparts" />
+        </el-form-item>
+        <el-form-item :label="$t('user.relTenantIds')" prop="relTenantIds" size="mini">
+          <el-input v-model="userForm.relTenantIds" />
+        </el-form-item>
+        <el-form-item :label="$t('user.userIdentity')" prop="userIdentity" size="mini">
+          <el-input v-model="userForm.userIdentity" />
+        </el-form-item>
+        <el-form-item :label="$t('user.avatar')" prop="avatar" size="mini">
+          <el-input v-model="userForm.avatar" />
+        </el-form-item>
+        <el-form-item :label="$t('user.birthday')" prop="birthday" size="mini">
+          <el-date-picker v-model="userForm.birthday" type="datetime" placeholder="Please pick a date" />
+        </el-form-item>
+        <el-form-item :label="$t('user.sex')" prop="sex" size="mini">
+          <el-select v-model="userForm.sex" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in sexTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('user.email')" prop="email" size="mini">
+          <el-input v-model="userForm.email" />
+        </el-form-item>
+        <el-form-item :label="$t('user.phone')" prop="phone" size="mini">
+          <el-input v-model="userForm.phone" />
+        </el-form-item>
+        <el-form-item :label="$t('user.telephone')" prop="telephone" size="mini">
+          <el-input v-model="userForm.telephone" />
+        </el-form-item>
+        <el-form-item :label="$t('user.activitiSync')" prop="activitiSync" size="mini">
+          <el-input v-model="userForm.activitiSync" />
+        </el-form-item>
+      </el-form>
+      <div class="user_add_footer">
+        <el-button size="mini" @click="cancelUserForm">取 消</el-button>
+        <el-button type="primary" size="mini" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -238,6 +304,25 @@ export default {
         type: '',
         status: 'published'
       },
+      userForm: {
+        username: '用户账户',
+        realname: '用户姓名',
+        password: '登录密码',
+        confirmPassword: '确认密码',
+        workNo: '工号',
+        post: '职务',
+        selectedroles: '角色',
+        selecteddeparts: '所属部门',
+        relTenantIds: '租户',
+        userIdentity: '身份',
+        avatar: '头像',
+        birthday: '生日',
+        sex: '性别',
+        email: '邮箱',
+        phone: '',
+        telephone: '座机',
+        activitiSync: '工作流引擎'
+      },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -251,7 +336,8 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      showAddUser: false
     }
   },
   created() {
@@ -307,12 +393,16 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      // this.resetTemp()
+      // this.dialogStatus = 'create'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
+      this.showAddUser = true
+    },
+    cancelUserForm() {
+      this.showAddUser = false
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -402,7 +492,10 @@ export default {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    handleSelectionChange() {}
+    handleSelectionChange() {},
+    handleCloseUser() {
+      this.showAddUser = false
+    }
   }
 }
 </script>
@@ -432,5 +525,9 @@ export default {
   .pagination-container {
     margin-top: 10px;
   }
+}
+.user_add_footer {
+  text-align: right;
+  padding: 0px 60px;
 }
 </style>

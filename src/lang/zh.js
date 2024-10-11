@@ -166,6 +166,25 @@ export default {
     warn_prod_content: '报警信息',
     warn_type: '报警类型'
   },
+  user: {
+    username: '用户账户',
+    realname: '用户姓名',
+    password: '登录密码',
+    confirmPassword: '确认密码',
+    workNo: '工号',
+    post: '职务',
+    selectedroles: '角色',
+    selecteddeparts: '所属部门',
+    relTenantIds: '租户',
+    userIdentity: '身份',
+    avatar: '头像',
+    birthday: '生日',
+    sex: '性别',
+    email: '邮箱',
+    phone: '',
+    telephone: '座机',
+    activitiSync: '工作流引擎'
+  },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
   },

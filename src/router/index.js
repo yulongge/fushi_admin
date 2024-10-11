@@ -237,7 +237,6 @@ export const asyncRoutes = [
       }
     ]
   },
-  */
   {
     path: '/icon',
     component: Layout,
@@ -250,6 +249,7 @@ export const asyncRoutes = [
       }
     ]
   },
+  */
   /** when your routing map is too long, you can split it into small modules **/
   // componentsRouter,
   // nestedRouter,
@@ -297,7 +297,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  */
+  
   {
     path: '/error',
     component: Layout,
@@ -322,6 +322,7 @@ export const asyncRoutes = [
       }
     ]
   },
+  */
   /*
   {
     path: '/error-log',
@@ -431,7 +432,6 @@ export const asyncRoutes = [
       }
     ]
   },
-  */
   {
     path: '/i18n',
     component: Layout,
@@ -444,6 +444,7 @@ export const asyncRoutes = [
       }
     ]
   },
+  */
   /*
   {
     path: 'external-link',
@@ -455,9 +456,8 @@ export const asyncRoutes = [
       }
     ]
   },
-  */
-  // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
+   */
 ]
 
 const createRouter = () => new Router({
