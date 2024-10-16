@@ -5,7 +5,7 @@
         <el-button class="filter-item" size="mini" style="" type="primary" icon="el-icon-plus" @click="handleCreate">
           {{ $t('table.add') }}
         </el-button>
-        <el-button class="filter-item" size="mini" style="" type="primary" icon="el-icon-plus" @click="handleCreate">
+        <el-button class="filter-item" size="mini" style="" type="primary" icon="el-icon-plus" @click="handleCreateSub">
           {{ $t('table.addSubDept') }}
         </el-button>
       </div>
@@ -31,58 +31,72 @@
     <div class="dept-rt">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基本信息" name="first">
-          <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="活动名称" prop="name">
-              <el-input v-model="ruleForm.name" />
+          <el-form ref="dataForm" :rules="rules" :model="ruleForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+            <el-form-item :label="$t('dept.departName')" prop="departName">
+              <el-input v-model="ruleForm.departName" />
             </el-form-item>
-            <el-form-item label="活动区域" prop="region">
-              <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai" />
-                <el-option label="区域二" value="beijing" />
-              </el-select>
+            <el-form-item :label="$t('dept.parentDept')" prop="parentDept">
+              <el-input v-model="ruleForm.parentDept" />
             </el-form-item>
-            <el-form-item label="活动时间" required>
-              <el-col :span="11">
-                <el-form-item prop="date1">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"/>
-                </el-form-item>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-form-item prop="date2">
-                  <el-time-picker v-model="ruleForm.date2" placeholder="选择时间" style="width: 100%;"/>
-                </el-form-item>
-              </el-col>
+            <el-form-item :label="$t('dept.orgCategory')" prop="orgCategory">
+              公司
             </el-form-item>
-            <el-form-item label="即时配送" prop="delivery">
-              <el-switch v-model="ruleForm.delivery" />
+            <el-form-item :label="$t('dept.departOrder')" prop="departOrder">
+              <el-input-number v-model="ruleForm.departOrder" :min="1" :max="10" label="描述文字" />
             </el-form-item>
-            <el-form-item label="活动性质" prop="type">
-              <el-checkbox-group v-model="ruleForm.type">
-                <el-checkbox label="美食/餐厅线上活动" name="type" />
-                <el-checkbox label="地推活动" name="type" />
-                <el-checkbox label="线下主题活动" name="type" />
-                <el-checkbox label="单纯品牌曝光" name="type" />
-              </el-checkbox-group>
+            <el-form-item :label="$t('dept.mobile')">
+              <el-input v-model="ruleForm.mobile" />
             </el-form-item>
-            <el-form-item label="特殊资源" prop="resource">
-              <el-radio-group v-model="ruleForm.resource">
-                <el-radio label="线上品牌商赞助" />
-                <el-radio label="线下场地免费" />
-              </el-radio-group>
+            <el-form-item :label="$t('dept.fax')">
+              <el-input v-model="ruleForm.fax" />
             </el-form-item>
-            <el-form-item label="活动形式" prop="desc">
-              <el-input v-model="ruleForm.desc" type="textarea" />
+            <el-form-item :label="$t('dept.address')">
+              <el-input v-model="ruleForm.address" />
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
+            <el-form-item :label="$t('dept.memo')">
+              <el-input v-model="ruleForm.memo" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
             </el-form-item>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="部门权限" name="second">部门权限</el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="deptDialog" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="ruleForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('dept.departName')" prop="departName">
+          <el-input v-model="ruleForm.departName" />
+        </el-form-item>
+        <el-form-item v-if="dialogStatus == 'createSub'" :label="$t('dept.parentDept')" prop="parentDept">
+          <el-input v-model="ruleForm.parentDept" />
+        </el-form-item>
+        <el-form-item :label="$t('dept.orgCategory')" prop="orgCategory">
+          公司
+        </el-form-item>
+        <el-form-item :label="$t('dept.departOrder')" prop="departOrder">
+          <el-input-number v-model="ruleForm.departOrder" :min="1" :max="10" label="描述文字" />
+        </el-form-item>
+        <el-form-item :label="$t('dept.mobile')">
+          <el-input v-model="ruleForm.mobile" />
+        </el-form-item>
+        <el-form-item :label="$t('dept.fax')">
+          <el-input v-model="ruleForm.fax" />
+        </el-form-item>
+        <el-form-item :label="$t('dept.address')">
+          <el-input v-model="ruleForm.address" />
+        </el-form-item>
+        <el-form-item :label="$t('dept.memo')">
+          <el-input v-model="ruleForm.memo" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deptDialog = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -144,14 +158,14 @@ export default {
       },
       activeName: 'first',
       ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        departName: '部门名称',
+        orgCategory: '机构类型',
+        departOrder: '排序',
+        mobile: '电话',
+        fax: '传真',
+        address: '地址',
+        memo: '备注',
+        parentDept: '上级部门'
       },
       rules: {
         name: [
@@ -176,7 +190,14 @@ export default {
         desc: [
           { required: true, message: '请填写活动形式', trigger: 'blur' }
         ]
-      }
+      },
+      deptDialog: false,
+      textMap: {
+        update: 'Edit',
+        create: '添加部门',
+        createSub: '添加下级部门'
+      },
+      dialogStatus: 'create'
     }
   },
   computed: {
@@ -244,7 +265,7 @@ export default {
         data.push(route)
         if (route.children) {
           const temp = this.generateArr(route.children)
-          if (temp.length > 0) {
+          if (ruleFormlength > 0) {
             data = [...data, ...temp]
           }
         }
@@ -371,7 +392,14 @@ export default {
       })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
+    },
+    handleCreate() {
+      this.deptDialog = true
+    },
+    handleCreateSub() {
+      this.dialogStatus = 'createSub'
+      this.deptDialog = true
     }
   }
 }

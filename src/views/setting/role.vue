@@ -56,12 +56,11 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-link type="primary" class="option-item" @click="handleUpdate(row, $index)">{{ $t('table.edit') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.detail') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.pwd') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.delete') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.forze') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.daili') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleCreate(row, $index)">{{ $t('table.edit') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleCreate(row, $index)">{{ $t('table.detail') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleDelete(row, $index)">{{ $t('table.delete') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleShowUsers(row, $index)">{{ $t('table.users') }}</el-link>
+          <el-link type="primary" class="option-item">{{ $t('table.auth') }}</el-link>
         </template>
       </el-table-column>
     </el-table>
@@ -112,6 +111,71 @@
         <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
       </span>
     </el-dialog>
+    <el-drawer
+      title="新增角色"
+      :visible.sync="showAddRole"
+      direction="rtl"
+      :before-close="cancelRoleForm"
+    >
+      <el-form ref="dataForm" :rules="rules" :model="roleForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('role.roleName')" prop="roleName" size="mini">
+          <el-input v-model="roleForm.roleName" />
+        </el-form-item>
+        <el-form-item :label="$t('role.roleCode')" prop="roleCode" size="mini">
+          <el-input v-model="roleForm.roleCode" />
+        </el-form-item>
+        <el-form-item :label="$t('role.description')" prop="description" size="mini">
+          <el-input v-model="roleForm.description" />
+        </el-form-item>
+      </el-form>
+      <div class="user_add_footer">
+        <el-button size="mini" @click="cancelUserForm">取 消</el-button>
+        <el-button type="primary" size="mini" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+      </div>
+    </el-drawer>
+    <el-drawer
+      title="角色用户"
+      :visible.sync="showUsersModal"
+      direction="rtl"
+      :before-close="cancelUsersModal"
+    >
+      <el-table
+        :key="tableKey"
+        v-loading="listLoading"
+        :data="userList"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%;"
+        @selection-change="handleSelectionChange"
+        @sort-change="sortChange"
+      >
+        <el-table-column type="selection" width="55" />
+        <el-table-column :label="$t('table.username')" width="120px">
+          <template slot-scope="{row}">
+            <span>{{ row.username }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('table.realname')" width="120px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.realname }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('table.status')" class-name="status-col" width="120">
+          <template slot-scope="{row}">
+            <el-tag :type="row.status | statusFilter">
+              {{ row.status == 1 ? '正常' : '冻结' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="{row,$index}">
+            <el-link type="primary" class="option-item" @click="handleUpdate(row, $index)">{{ $t('table.edit') }}</el-link>
+            <el-link type="primary" class="option-item">{{ $t('table.delete') }}</el-link>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
   </div>
 </template>
 
@@ -203,7 +267,15 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      showAddRole: false,
+      roleForm: {
+        roleName: '角色名称',
+        roleCode: '角色编码',
+        description: '备注'
+      },
+      showUsersModal: false,
+      userList: null
     }
   },
   created() {
@@ -215,7 +287,7 @@ export default {
       getUserList(this.listQuery).then(response => {
         this.list = response.data.records
         this.total = response.data.total
-
+        this.userList = response.data.records
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -259,12 +331,10 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      this.showAddRole = true
+    },
+    cancelRoleForm() {
+      this.showAddRole = false
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -313,13 +383,22 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+      this.$confirm('删除后将无法恢复, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
       })
-      this.list.splice(index, 1)
+    },
+    handleShowUsers(row, index) {
+      this.showUsersModal = true
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -353,6 +432,9 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    cancelUsersModal() {
+      this.showUsersModal = false
     }
   }
 }
@@ -383,5 +465,9 @@ export default {
   .pagination-container {
     margin-top: 10px;
   }
+}
+.user_add_footer {
+  text-align: right;
+  padding: 0px 60px;
 }
 </style>

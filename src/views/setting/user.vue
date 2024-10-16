@@ -105,10 +105,10 @@
       <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-link type="primary" class="option-item" @click="handleUpdate(row, $index)">{{ $t('table.edit') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.detail') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.pwd') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.delete') }}</el-link>
-          <el-link type="primary" class="option-item">{{ $t('table.forze') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleDetail(row, $index)">{{ $t('table.detail') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handlePwd">{{ $t('table.pwd') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleDelete(row, $index)">{{ $t('table.delete') }}</el-link>
+          <el-link type="primary" class="option-item" @click="handleForze(row, $index)">{{ $t('table.forze') }}</el-link>
           <el-link type="primary" class="option-item">{{ $t('table.daili') }}</el-link>
         </template>
       </el-table-column>
@@ -116,36 +116,23 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in sexTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="560px">
+      <el-form ref="dataForm" :rules="rules" :model="userForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('user.username')" prop="username" size="mini">
+          <el-input v-model="userForm.username" />
         </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        <el-form-item :label="$t('user.password')" prop="password" size="mini">
+          <el-input v-model="userForm.password" />
         </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        <el-form-item :label="$t('user.confirmPassword')" prop="confirmPassword" size="mini">
+          <el-input v-model="userForm.confirmPassword" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button size="mini" @click="dialogFormVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button size="mini" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -423,13 +410,20 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
+      // this.temp = Object.assign({}, row) // copy obj
+      // this.temp.timestamp = new Date(this.temp.timestamp)
+      // this.dialogStatus = 'update'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
+      this.showAddUser = true
+    },
+    handleDetail() {
+      this.showAddUser = true
+    },
+    handlePwd() {
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -451,13 +445,34 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+      this.$confirm('删除后将无法恢复, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
       })
-      this.list.splice(index, 1)
+    },
+    handleForze(row, index) {
+      this.$confirm('确定要冻结此用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$notify({
+          title: '成功',
+          message: '冻结成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
+      })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

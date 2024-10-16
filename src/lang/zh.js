@@ -164,7 +164,11 @@ export default {
     warn_prod_fushi: '腐蚀速率',
     warn_prod_fushi_standard: '腐蚀速率标准值',
     warn_prod_content: '报警信息',
-    warn_type: '报警类型'
+    warn_type: '报警类型',
+    users: '用户',
+    auth: '授权',
+    read: '已读',
+    unread: '未读'
   },
   user: {
     username: '用户账户',
@@ -184,6 +188,21 @@ export default {
     phone: '',
     telephone: '座机',
     activitiSync: '工作流引擎'
+  },
+  role: {
+    roleName: '角色名称',
+    roleCode: '角色编码',
+    description: '备注'
+  },
+  dept: {
+    departName: '部门名称',
+    orgCategory: '机构类型',
+    departOrder: '排序',
+    mobile: '电话',
+    fax: '传真',
+    address: '地址',
+    memo: '备注',
+    parentDept: '上级部门'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
