@@ -41,6 +41,8 @@ export default {
     dragTable: '拖拽 Table',
     inlineEditTable: 'Table 内编辑',
     complexTable: '综合 Table',
+    dztzMonitor: '电阻探针',
+    cschyMonitor: '超声测厚仪',
     tab: 'Tab',
     form: '表单',
     createArticle: '创建文章',
@@ -203,6 +205,20 @@ export default {
     address: '地址',
     memo: '备注',
     parentDept: '上级部门'
+  },
+  product: {
+    orgName: '所属部门',
+    bianhao: '设备编号',
+    mingcheng: '设备名称',
+    tongxunduankou: '通讯端口',
+    tongxundizhi: '通讯地址',
+    longitude: '经度',
+    latitude: '纬度',
+    chushihoudu: '初始厚度（毫米）',
+    chushibizhi: '初始比值',
+    caiyangjiange: '采样间隔（分钟）',
+    shebeizhuangtai_dictText: '设备状态',
+    fushisulvBiaozhunzhi: '腐蚀速率标准值'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
