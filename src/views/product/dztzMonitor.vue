@@ -12,7 +12,7 @@
           <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">
             {{ $t('table.search') }}
           </el-button>
-          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">
+          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleCreate">
             {{ $t('table.add') }}
           </el-button>
         </el-form-item>
@@ -27,7 +27,6 @@
         {{ $t('table.import') }}
       </el-button> -->
     </div>
-
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -117,35 +116,47 @@
         </template>
       </el-table-column>
     </el-table>
-
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="740px">
+      <el-form ref="dataForm" :inline="true" :rules="rules" :model="productForm" label-position="right" label-width="120px">
+        <el-form-item :label="$t('product.orgName')" prop="orgName" class="form-item">
+          <el-input v-model="productForm.orgName" />
         </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        <el-form-item :label="$t('product.bianhao')" prop="bianhao">
+          <el-input v-model="productForm.bianhao" />
         </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title" />
+        <el-form-item :label="$t('product.mingcheng')" prop="mingcheng" class="form-item">
+          <el-input v-model="productForm.mingcheng" />
         </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
+        <el-form-item :label="$t('product.tongxunduankou')" prop="tongxunduankou">
+          <el-input v-model="productForm.tongxunduankou" />
         </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        <el-form-item :label="$t('product.tongxundizhi')" prop="tongxundizhi" class="form-item">
+          <el-input v-model="productForm.tongxundizhi" />
         </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        <el-form-item :label="$t('product.longitude')" prop="longitude">
+          <el-input v-model="productForm.longitude" />
+        </el-form-item>
+        <el-form-item :label="$t('product.latitude')" prop="latitude" class="form-item">
+          <el-input v-model="productForm.latitude" />
+        </el-form-item>
+        <el-form-item :label="$t('product.chushihoudu')" prop="chushihoudu">
+          <el-input v-model="productForm.chushihoudu" />
+        </el-form-item>
+        <el-form-item :label="$t('product.chushibizhi')" prop="chushibizhi" class="form-item">
+          <el-input v-model="productForm.chushibizhi" />
+        </el-form-item>
+        <el-form-item :label="$t('product.caiyangjiange')" prop="caiyangjiange">
+          <el-input v-model="productForm.caiyangjiange" />
+        </el-form-item>
+        <el-form-item :label="$t('product.shebeizhuangtai_dictText')" prop="shebeizhuangtai_dictText" class="form-item">
+          <el-input v-model="productForm.shebeizhuangtai_dictText" />
+        </el-form-item>
+        <el-form-item :label="$t('product.fushisulvBiaozhunzhi')" prop="fushisulvBiaozhunzhi">
+          <el-input v-model="productForm.fushisulvBiaozhunzhi" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer form-footer">
         <el-button @click="dialogFormVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
@@ -223,14 +234,19 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+      productForm: {
+        orgName: '所属部门',
+        bianhao: '设备编号',
+        mingcheng: '设备名称',
+        tongxunduankou: '通讯端口',
+        tongxundizhi: '通讯地址',
+        longitude: '经度',
+        latitude: '纬度',
+        chushihoudu: '初始厚度（毫米）',
+        chushibizhi: '初始比值',
+        caiyangjiange: '采样间隔（分钟）',
+        shebeizhuangtai_dictText: '设备状态',
+        fushisulvBiaozhunzhi: '腐蚀速率标准值'
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -303,12 +319,13 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
+      // this.resetTemp()
+      // this.dialogStatus = 'create'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -357,13 +374,19 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+      this.$confirm('Confirm to remove the role?', 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async() => {
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
       })
-      this.list.splice(index, 1)
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -401,3 +424,11 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.form-item {
+  margin-right: 40px;
+}
+.form-footer {
+  padding-right: 56px;
+}
+</style>
