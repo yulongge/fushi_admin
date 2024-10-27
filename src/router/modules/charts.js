@@ -13,6 +13,24 @@ const chartsRouter = {
   },
   children: [
     {
+      path: 'dztzData',
+      component: () => import('@/views/analysis/dztz'),
+      name: 'DztzData',
+      meta: { title: 'dztzData', noCache: true }
+    },
+    {
+      path: 'ybcszData',
+      component: () => import('@/views/analysis/ybcsz'),
+      name: 'YbcszData',
+      meta: { title: 'ybcszData', noCache: true }
+    },
+    {
+      path: 'cschyData',
+      component: () => import('@/views/analysis/cschy'),
+      name: 'CschyData',
+      meta: { title: 'cschyData', noCache: true }
+    },
+    {
       path: 'keyboard',
       component: () => import('@/views/charts/keyboard'),
       name: 'KeyboardChart',

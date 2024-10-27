@@ -23,7 +23,7 @@ export default {
     dragDialog: '拖拽 Dialog',
     dragSelect: '拖拽 Select',
     dragKanban: '可拖拽看板',
-    charts: '视图分析',
+    charts: '数据分析',
     keyboardChart: '键盘图表',
     lineChart: '折线图',
     mixChart: '混合图表',
@@ -71,7 +71,10 @@ export default {
     warn: '报警管理',
     deptSetting: '部门管理',
     menuSetting: '菜单管理',
-    ybceMonitor: '阴保测试桩'
+    ybceMonitor: '阴保测试桩',
+    dztzData: '电阻探针数据',
+    ybcszData: '阴保测试桩数据',
+    cschyData: '超声测厚仪数据'
   },
   navbar: {
     dashboard: '首页',
@@ -223,7 +226,13 @@ export default {
     fushisulvBiaozhunzhi: '腐蚀速率标准值',
     chuchangbianhao: '出厂编号',
     tantougeshu: '探头个数',
-    installAdress: '安装位置'
+    installAdress: '安装位置',
+    caijishijian: '采集时间',
+    baohudianya: '保护电压',
+    fushisulv: '腐蚀速率',
+    monitorTime: '检测时间',
+    houdu1: '厚度1',
+    fushisulv1: '腐蚀速率1'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

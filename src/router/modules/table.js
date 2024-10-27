@@ -13,6 +13,12 @@ const tableRouter = {
   },
   children: [
     {
+      path: 'dztzData',
+      component: () => import('@/views/table/dynamic-table/index'),
+      name: 'DztzData',
+      meta: { title: 'dztzData' }
+    },
+    {
       path: 'dynamic-table',
       component: () => import('@/views/table/dynamic-table/index'),
       name: 'DynamicTable',
