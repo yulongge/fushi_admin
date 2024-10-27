@@ -250,5 +250,139 @@ module.exports = [
         }
       }
     }
+  },
+  {
+    url: '/vue-element-admin/product/chaosheng/tantouList',
+    type: 'get',
+    response: config => {
+      return {
+        code: 20000,
+        data: {
+          'records': [
+            {
+              'id': '1728266554958720000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '1',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '1号位置'
+            },
+            {
+              'id': '1728266576462910000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '2',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '2号位置'
+            },
+            {
+              'id': '1728266591730180000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '3',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '3号位置'
+            },
+            {
+              'id': '1728266607332990000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '4',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '4号位置'
+            },
+            {
+              'id': '1728266623472670000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '5',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '5号位置'
+            },
+            {
+              'id': '1728266639939510000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '6',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '6号位置'
+            },
+            {
+              'id': '1728266652669220000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': null,
+              'updateTime': null,
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '7',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '7号位置'
+            },
+            {
+              'id': '1728266666657230000',
+              'createBy': 'test',
+              'createTime': '2023-11-25',
+              'updateBy': 'test',
+              'updateTime': '2023-11-25',
+              'sysOrgCode': 'A02',
+              'deviceid': null,
+              'bianhao': '1',
+              'tantoubianhao': '8',
+              'tongxunduankou': null,
+              'tongxundizhi': null,
+              'anzhuangweizhi': '8号位置'
+            }
+          ],
+          'total': 8,
+          'size': 10,
+          'current': 1,
+          'orders': [],
+          'optimizeCountSql': true,
+          'searchCount': true,
+          'countId': null,
+          'maxLimit': null,
+          'pages': 1
+        }
+      }
+    }
   }
 ]

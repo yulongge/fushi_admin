@@ -7,3 +7,11 @@ export function getDztzList(query) {
     params: query
   })
 }
+
+export function getTanTouList(query) {
+  return request({
+    url: '/vue-element-admin/product/chaosheng/tantouList',
+    method: 'get',
+    params: query
+  })
+}

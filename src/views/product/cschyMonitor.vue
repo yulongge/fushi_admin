@@ -1,0 +1,494 @@
+<template>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-form ref="form" :model="listQuery" label-width="100px" :inline="true">
+        <el-form-item label="设备编号">
+          <el-input v-model="listQuery.username" size="mini" :placeholder="$t('table.username')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+        </el-form-item>
+        <el-form-item label="设备名称">
+          <el-input v-model="listQuery.realname" size="mini" :placeholder="$t('table.realname')" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
+        </el-form-item>
+        <el-form-item>
+          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">
+            {{ $t('table.search') }}
+          </el-button>
+          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleCreate">
+            {{ $t('table.add') }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <!-- <el-button class="filter-item" size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">
+        {{ $t('table.add') }}
+      </el-button>
+      <el-button v-waves :loading="downloadLoading" size="mini" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+        {{ $t('table.export') }}
+      </el-button>
+      <el-button v-waves :loading="downloadLoading" size="mini" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+        {{ $t('table.import') }}
+      </el-button> -->
+    </div>
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+      />
+      <el-table-column :label="$t('product.orgName')" width="150">
+        <template slot-scope="{row}">
+          <span>{{ row.orgName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.bianhao')" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.orgName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.mingcheng')" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.mingcheng }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.tongxunduankou')" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.tongxunduankou }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="showReviewer" :label="$t('product.tongxundizhi')" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span style="color:red;">{{ row.tongxundizhi }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.longitude')" width="80px">
+        <template slot-scope="{row}">
+          <span>{{ row.longitude }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.latitude')" align="center" width="95">
+        <template slot-scope="{row}">
+          <span>{{ row.latitude }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.chuchangbianhao')" align="center" width="95">
+        <template slot-scope="{row}">
+          <span>{{ row.chuchangbianhao }}</span>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column :label="$t('product.chushihoudu')" class-name="status-col" width="100">
+        <template slot-scope="{row}">
+          <span>{{ row.chushihoudu }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.chushibizhi')" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.chushibizhi }}</span>
+        </template>
+      </el-table-column> -->
+      <el-table-column :label="$t('product.caiyangjiange')" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.caiyangjiange }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.shebeizhuangtai_dictText')" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.shebeizhuangtai_dictText }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.tantougeshu')" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.tantougeshu }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('product.fushisulvBiaozhunzhi')" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.fushisulvBiaozhunzhi }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.actions')" align="center" fixed="right" width="320" class-name="small-padding fixed-width">
+        <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleTantouManage(row)">
+            {{ $t('table.ttgl') }}
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            {{ $t('table.edit') }}
+          </el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            {{ $t('table.detail') }}
+          </el-button>
+          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+            {{ $t('table.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="740px">
+      <el-form ref="dataForm" :inline="true" :rules="rules" :model="productForm" label-position="right" label-width="120px">
+        <el-form-item :label="$t('product.orgName')" prop="orgName" class="form-item">
+          <el-input v-model="productForm.orgName" />
+        </el-form-item>
+        <el-form-item :label="$t('product.bianhao')" prop="bianhao">
+          <el-input v-model="productForm.bianhao" />
+        </el-form-item>
+        <el-form-item :label="$t('product.mingcheng')" prop="mingcheng" class="form-item">
+          <el-input v-model="productForm.mingcheng" />
+        </el-form-item>
+        <el-form-item :label="$t('product.tongxunduankou')" prop="tongxunduankou">
+          <el-input v-model="productForm.tongxunduankou" />
+        </el-form-item>
+        <el-form-item :label="$t('product.tongxundizhi')" prop="tongxundizhi" class="form-item">
+          <el-input v-model="productForm.tongxundizhi" />
+        </el-form-item>
+        <el-form-item :label="$t('product.longitude')" prop="longitude">
+          <el-input v-model="productForm.longitude" />
+        </el-form-item>
+        <el-form-item :label="$t('product.latitude')" prop="latitude" class="form-item">
+          <el-input v-model="productForm.latitude" />
+        </el-form-item>
+        <el-form-item :label="$t('product.chushihoudu')" prop="chushihoudu">
+          <el-input v-model="productForm.chushihoudu" />
+        </el-form-item>
+        <el-form-item :label="$t('product.chushibizhi')" prop="chushibizhi" class="form-item">
+          <el-input v-model="productForm.chushibizhi" />
+        </el-form-item>
+        <el-form-item :label="$t('product.caiyangjiange')" prop="caiyangjiange">
+          <el-input v-model="productForm.caiyangjiange" />
+        </el-form-item>
+        <el-form-item :label="$t('product.shebeizhuangtai_dictText')" prop="shebeizhuangtai_dictText" class="form-item">
+          <el-input v-model="productForm.shebeizhuangtai_dictText" />
+        </el-form-item>
+        <el-form-item :label="$t('product.fushisulvBiaozhunzhi')" prop="fushisulvBiaozhunzhi">
+          <el-input v-model="productForm.fushisulvBiaozhunzhi" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer form-footer">
+        <el-button @click="dialogFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="tantouManageDialog" title="探头管理">
+      <el-button class="ttgz-option" type="primary" size="mini" icon="el-icon-plus" @click="addTanTou(row)">
+        {{ $t('table.add') }}
+      </el-button>
+      <el-table :data="pvData" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          width="55"
+        />
+        <el-table-column prop="tantoubianhao" label="超声测厚仪编号" width="200px" />
+        <el-table-column prop="bianhao" label="设备编号" />
+        <el-table-column prop="tongxunduankou" label="通讯端口" />
+        <el-table-column prop="tongxundizhi" label="通讯地址" />
+        <el-table-column prop="anzhuangweizhi" label="安装位置" />
+        <el-table-column :label="$t('table.actions')" align="center" fixed="right" width="320" class-name="small-padding fixed-width">
+          <template slot-scope="{row,$index}">
+            <el-button type="primary" size="mini" @click="addTanTou(row)">
+              {{ $t('table.edit') }}
+            </el-button>
+            <el-button type="primary" size="mini" @click="addTanTou(row)">
+              {{ $t('table.detail') }}
+            </el-button>
+            <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+              {{ $t('table.delete') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="tantouManageDialog = false">{{ $t('table.confirm') }}</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="addTantouDialog" title="添加探头" width="700px">
+      <el-form ref="dataForm" :inline="true" :rules="rules" :model="productForm" label-position="right" label-width="120px">
+        <el-form-item :label="$t('product.bianhao')" prop="bianhao">
+          <el-input v-model="productForm.bianhao" />
+        </el-form-item>
+        <el-form-item :label="$t('product.tongxunduankou')" prop="tongxunduankou">
+          <el-input v-model="productForm.tongxunduankou" />
+        </el-form-item>
+        <el-form-item :label="$t('product.tongxundizhi')" prop="tongxundizhi">
+          <el-input v-model="productForm.tongxundizhi" />
+        </el-form-item>
+        <el-form-item :label="$t('product.installAdress')" prop="installAdress">
+          <el-input v-model="productForm.installAdress" />
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { getDztzList, getTanTouList } from '@/api/dztz'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+
+const calendarTypeOptions = [
+  { key: 'CN', display_name: 'China' },
+  { key: 'US', display_name: 'USA' },
+  { key: 'JP', display_name: 'Japan' },
+  { key: 'EU', display_name: 'Eurozone' }
+]
+
+// arr to obj, such as { CN : "China", US : "USA" }
+const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+  acc[cur.key] = cur.display_name
+  return acc
+}, {})
+
+export default {
+  name: 'ComplexTable',
+  components: { Pagination },
+  directives: { waves },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    },
+    typeFilter(type) {
+      return calendarTypeKeyValue[type]
+    }
+  },
+  data() {
+    return {
+      tableKey: 0,
+      list: null,
+      total: 0,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 20,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: '+id'
+      },
+      importanceOptions: [1, 2, 3],
+      calendarTypeOptions,
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      statusOptions: ['published', 'draft', 'deleted'],
+      showReviewer: false,
+      productForm: {
+        orgName: '所属部门',
+        bianhao: '设备编号',
+        mingcheng: '设备名称',
+        tongxunduankou: '通讯端口',
+        tongxundizhi: '通讯地址',
+        longitude: '经度',
+        latitude: '纬度',
+        chushihoudu: '初始厚度（毫米）',
+        chushibizhi: '初始比值',
+        caiyangjiange: '采样间隔（分钟）',
+        shebeizhuangtai_dictText: '设备状态',
+        fushisulvBiaozhunzhi: '腐蚀速率标准值',
+        installAdress: '安装位置'
+      },
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      tantouManageDialog: false,
+      pvData: [],
+      rules: {
+        type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+      },
+      downloadLoading: false,
+      addTantouDialog: false
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.listLoading = true
+      getDztzList(this.listQuery).then(response => {
+        console.log(response.data, 'listQuery')
+        this.list = response.data.records
+        this.total = response.data.total
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
+    },
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: '操作成功',
+        type: 'success'
+      })
+      row.status = status
+    },
+    sortChange(data) {
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    handleSelectionChange() {},
+
+    sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
+    },
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        title: '',
+        status: 'published',
+        type: ''
+      }
+    },
+    handleCreate() {
+      // this.resetTemp()
+      // this.dialogStatus = 'create'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
+      this.dialogFormVisible = true
+    },
+    createData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          this.temp.author = 'vue-element-admin'
+          createArticle(this.temp).then(() => {
+            this.list.unshift(this.temp)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '创建成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp)
+          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateArticle(tempData).then(() => {
+            const index = this.list.findIndex(v => v.id === this.temp.id)
+            this.list.splice(index, 1, this.temp)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    handleDelete(row, index) {
+      this.$confirm('Confirm to remove the role?', 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async() => {
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
+      })
+    },
+    handleTantouManage(pv) {
+      getTanTouList(pv).then(response => {
+        this.pvData = response.data.records
+        this.tantouManageDialog = true
+      })
+    },
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+        const data = this.formatJson(filterVal)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal) {
+      return this.list.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    addTanTou() {
+      this.addTantouDialog = true
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.form-item {
+  margin-right: 40px;
+}
+.form-footer {
+  padding-right: 56px;
+}
+.ttgz-option {
+  margin-bottom: 20px;
+}
+</style>

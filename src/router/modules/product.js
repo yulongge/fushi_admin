@@ -18,9 +18,15 @@ const ProductRouter = {
     },
     {
       path: 'cschyMonitor',
-      component: () => import('@/views/product/dztzMonitor'),
+      component: () => import('@/views/product/cschyMonitor'),
       name: 'cschyMonitor',
       meta: { title: 'cschyMonitor' }
+    },
+    {
+      path: 'ybceMonitor',
+      component: () => import('@/views/product/ybceMonitor'),
+      name: 'ybceMonitor',
+      meta: { title: 'ybceMonitor' }
     }
   ]
 }

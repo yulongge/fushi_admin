@@ -70,7 +70,8 @@ export default {
     userSetting: '用户管理',
     warn: '报警管理',
     deptSetting: '部门管理',
-    menuSetting: '菜单管理'
+    menuSetting: '菜单管理',
+    ybceMonitor: '阴保测试桩'
   },
   navbar: {
     dashboard: '首页',
@@ -170,7 +171,8 @@ export default {
     users: '用户',
     auth: '授权',
     read: '已读',
-    unread: '未读'
+    unread: '未读',
+    ttgl: '探头管理'
   },
   user: {
     username: '用户账户',
@@ -218,7 +220,10 @@ export default {
     chushibizhi: '初始比值',
     caiyangjiange: '采样间隔（分钟）',
     shebeizhuangtai_dictText: '设备状态',
-    fushisulvBiaozhunzhi: '腐蚀速率标准值'
+    fushisulvBiaozhunzhi: '腐蚀速率标准值',
+    chuchangbianhao: '出厂编号',
+    tantougeshu: '探头个数',
+    installAdress: '安装位置'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
