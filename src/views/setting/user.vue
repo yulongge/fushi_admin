@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form ref="form" :model="listQuery" label-width="40px" :inline="true">
         <el-form-item label="账户">
-          <el-input v-model="listQuery.username" size="mini" :placeholder="$t('table.username')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-input v-model="listQuery.username" size="mini" :placeholder="$t('table.username')" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="listQuery.realname" size="mini" :placeholder="$t('table.realname')" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
@@ -14,7 +14,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="手机号" label-width="80px">
-          <el-input v-model="listQuery.phone" size="mini" :placeholder="$t('table.phone')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-input v-model="listQuery.phone" size="mini" :placeholder="$t('table.phone')" style="width: 160px;" class="filter-item" @keyup.enter.native="handleFilter" />
         </el-form-item>
         <el-form-item label="用户状态" label-width="80px">
           <el-select v-model="listQuery.status" size="mini" :placeholder="$t('table.status')" clearable class="filter-item" style="width: 130px">
@@ -102,7 +102,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" fixed="right" class-name="small-padding fixed-width" width="300">
         <template slot-scope="{row,$index}">
           <el-link type="primary" class="option-item" @click="handleUpdate(row, $index)">{{ $t('table.edit') }}</el-link>
           <el-link type="primary" class="option-item" @click="handleDetail(row, $index)">{{ $t('table.detail') }}</el-link>
@@ -152,8 +152,9 @@
       :visible.sync="showAddUser"
       direction="rtl"
       :before-close="handleCloseUser"
+      width="500px"
     >
-      <el-form ref="dataForm" :rules="rules" :model="userForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="userForm" label-position="left" label-width="100px" style="width: 500px; margin-left:50px;">
         <el-form-item :label="$t('user.username')" prop="username" size="mini">
           <el-input v-model="userForm.username" />
         </el-form-item>
@@ -210,14 +211,14 @@
       </el-form>
       <div class="user_add_footer">
         <el-button size="mini" @click="cancelUserForm">取 消</el-button>
-        <el-button type="primary" size="mini" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+        <el-button type="primary" size="mini" :loading="loading" @click="$refs.drawer.closeDrawer()">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
       </div>
     </el-drawer>
   </div>
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchPv, createArticle, updateArticle } from '@/api/article'
 import { getUserList } from '@/api/user'
 
 import waves from '@/directive/waves' // waves directive

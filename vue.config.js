@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Element Admin' // page title
+const name = defaultSettings.title || '腐蚀平台' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -36,7 +36,16 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js'),
+    proxy: {
+      '/corrosion': {
+        target: 'http://124.70.59.96', // 目标服务器地址
+        changeOrigin: true, // 是否改变源地址
+        pathRewrite: {
+          '^/corrosion': '' // 重写路径
+        }
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
