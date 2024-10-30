@@ -12,6 +12,9 @@
           <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleCreate">
             {{ $t('table.reset') }}
           </el-button>
+          <el-button v-waves class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="analysic">
+            数据分析
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -368,6 +371,9 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    analysic() {
+      this.$router.push(`/charts/keyboard`)
     }
   }
 }

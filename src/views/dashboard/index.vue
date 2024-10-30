@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <!-- {{ adminDashboard }} -->
     <component :is="currentRole" />
   </div>
 </template>
@@ -23,8 +24,9 @@ export default {
     ])
   },
   created() {
+    console.log(this.roles, 'roles')
     if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard'
+      // this.currentRole = 'editorDashboard'
     }
   }
 }

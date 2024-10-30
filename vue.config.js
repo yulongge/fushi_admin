@@ -36,14 +36,14 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js'),
+    before: require('./mock/mock-server.js'),
     proxy: {
       '/corrosion': {
         target: 'http://124.70.59.96', // 目标服务器地址
-        changeOrigin: true, // 是否改变源地址
-        pathRewrite: {
-          '^/corrosion': '' // 重写路径
-        }
+        changeOrigin: true // 是否改变源地址
+        // pathRewrite: {
+        //   '^/corrosion': '' // 重写路径
+        // }
       }
     }
   },

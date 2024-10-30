@@ -11,6 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
+  console.log('....')
   // start progress bar
   NProgress.start()
 
@@ -19,7 +20,7 @@ router.beforeEach(async(to, from, next) => {
 
   // determine whether the user has logged in
   const hasToken = getToken()
-
+  console.log(hasToken, 'hasToken')
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
@@ -28,29 +29,34 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      console.log(hasRoles, 'hasRoles')
       if (hasRoles) {
         next()
       } else {
         try {
+          console.log('coming...')
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           // const { roles } = await store.dispatch('user/getInfo')
 
           // generate accessible routes map based on roles
           // const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+          store.dispatch('user/getInfo')
           const accessRoutes = await store.dispatch('permission/generateRoutes', ['admin'])
           // dynamically add accessible routes
+          // await store.dispatch('permission/generateRoutes', ['admin'])
           router.addRoutes(accessRoutes)
 
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
+          // next()
         } catch (error) {
           // remove token and go to login page to re-login
-          await store.dispatch('user/resetToken')
+          // await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
-          NProgress.done()
+          // next(`/login?redirect=${to.path}`)
+          // NProgress.done()
         }
       }
     }
@@ -59,9 +65,11 @@ router.beforeEach(async(to, from, next) => {
 
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
+      console.log('coming.....')
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
+      console.log('coming..... path')
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }
